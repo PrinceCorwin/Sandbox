@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Naming Conventions
+- **App name:** Sandbox
+- **Company name:** Summit Industrial — this is the ONLY correct name for the company
+  - NEVER use "Summit Constructors", "Summit Industrial Constructors", or any other variation
+
 ## Build & Run
 
 ```bash
@@ -26,6 +31,21 @@ Each miniapp is a folder under `apps/` with:
 
 Miniapps must not depend on each other. Adding/removing a folder under `apps/` should not affect other miniapps.
 
+## Development Approach
+- ONE change at a time, test before proceeding
+- No quick fixes — proper architectural solutions
+- Delete/refactor legacy code when no longer relevant
+- After completing a feature: identify improvements, check for dead code, suggest refactoring
+- ALWAYS run `python run.py` after changes and verify before reporting completion
+
+**See also:** `Plans/Project_Status.md` (todos, backlog), `Plans/Completed_Work.md` (changelog)
+
+### Help Manual Maintenance
+- When features are added, deleted, or modified, update `Help/manual.html` to keep documentation current
+- Add new features to the appropriate section and update the Table of Contents if adding new sections
+- Remove documentation for deleted features
+- Update existing documentation when feature behavior changes
+
 ## Permanent Instructions
 
 **Always show loading feedback.** Use `showSpinner()` / `hideSpinner()` from `common.js` for any async operation. Use `showToast()` for success/error feedback. The user must never wonder if something is happening.
@@ -34,7 +54,46 @@ Miniapps must not depend on each other. Adding/removing a folder under `apps/` s
 
 **Toast notifications** go bottom-right via `#toast-container`. Three types: `success`, `error`, `info`.
 
-**Update project plans before every commit.** Before committing, update `plans/ProjectStatus.md` (current/future work) and `plans/CompletedWork.md` (finished items). Move completed items from ProjectStatus to CompletedWork. On the 1st of each month, archive CompletedWork to `plans/archive/CompletedWork-YYYY-MM-DD.md` and start a fresh CompletedWork file.
+## Git Commits
+- **NEVER commit without explicit user permission** — user needs to test changes first
+  - "Update X" or "Add Y" means make the change, NOT commit it
+  - Wait for explicit "commit" instruction before running git commit
+- ALWAYS push to remote after committing, unless user instructs otherwise
+- **ALWAYS commit ALL uncommitted changes** when user says "commit":
+  - Use `git add -A` to stage EVERYTHING — no exceptions
+  - NEVER selectively choose files based on what you worked on
+  - NEVER skip files because they were "already modified" or "unrelated to current work"
+  - If a file shows up in `git status`, it gets committed. Period.
+  - The ONLY exception is if user explicitly says "commit only X" or "don't commit Y"
+- Do NOT add "Generated with Claude" or "Co-Authored-By: Claude" to commit messages
+- Do NOT add AI attribution comments in code
+- Write clear, concise commit messages describing the change
+- Watch for `nul` file in git status — this is a Windows artifact that gets created accidentally. Delete it immediately with `rm -f nul` when spotted.
+
+### MANDATORY Pre-Commit Checklist
+**When user says "commit", invoke the `/finisher` skill.** If the skill file is unavailable, follow these steps manually:
+
+1. Update `Plans/Project_Status.md` — Remove completed items from the backlog
+2. Update `Plans/Completed_Work.md` — Add entry describing what was completed (with date header)
+3. **HELP MANUAL CHECK (frequently missed!):**
+   - Ask: "Did this work change anything a user would see or interact with?"
+   - If YES: Update `Help/manual.html` (add/update/remove sections, update TOC if needed)
+   - If NO: Confirm why not (e.g., "internal refactor only, no UI change")
+4. Update any other relevant plan docs if the work relates to a specific feature plan
+5. ONLY THEN proceed with `git add -A` and `git commit`
+
+**All paths are relative to the repository root. NEVER use absolute paths.**
+**This is NOT optional. Failure to update status docs before committing is a workflow violation.**
+
+### Status Doc Timing
+- **Do NOT update Project_Status.md or Completed_Work.md until user confirms the work is tested and complete**
+- Making code changes does not mean the work is done — user must test first
+- Only move items to Completed_Work.md after explicit user confirmation that testing passed
+
+### Plan File Management
+- Plan files in the `Plans/` folder should be deleted once fully implemented
+- Before deleting: ensure Project_Status.md and any related docs are updated
+- **ALWAYS ask the user before deleting plan files, even if accept edits is enabled**
 
 ## Code Standards
 
@@ -51,3 +110,10 @@ Miniapps must not depend on each other. Adding/removing a folder under `apps/` s
 - No shared Python modules coupling miniapps together.
 - No packages requiring system-level or admin installs.
 - Never commit `venv/`, `data/`, or `start.bat`.
+
+## Communication Preferences
+- Be direct, skip pleasantries
+- State what to do and why
+- Challenge assumptions if there's a better approach
+- Present code one block at a time, wait for confirmation
+- When in plan mode, do NOT call ExitPlanMode until user explicitly agrees to the plan

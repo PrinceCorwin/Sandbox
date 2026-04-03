@@ -10,4 +10,5 @@
 - [ ] Design and plan first real miniapp (FW Allocation)
 - [ ] Add "delete tag" functionality to sidebar (right-click or edit mode)
 - [ ] Settings menu content (theme selection, help, about)
+- [ ] Integrate Help/manual.html into app settings menu
 - [ ] Chrome app-mode desktop shortcut for native-app feel

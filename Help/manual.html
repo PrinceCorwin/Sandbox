@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox - Help Manual</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent-cyan: #0891b2;
+            --accent-cyan-dim: #0e7490;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #2d3a4f;
+            --radius: 8px;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--accent-cyan);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: var(--accent-cyan);
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: var(--bg-tertiary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.35rem;
+        }
+
+        .toc {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.25rem;
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+        }
+        .toc a:hover {
+            color: var(--accent-cyan);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        p {
+            margin-bottom: 0.75rem;
+        }
+
+        kbd {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sandbox Help Manual</h1>
+
+<div class="toc">
+    <strong>Table of Contents</strong>
+    <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#home-page">Home Page</a></li>
+        <li><a href="#miniapps">Miniapps</a></li>
+        <li><a href="#tags">Tags</a></li>
+        <li><a href="#favorites">Favorites</a></li>
+        <li><a href="#search-and-sort">Search and Sort</a></li>
+        <li><a href="#card-and-list-view">Card and List View</a></li>
+        <li><a href="#editing-app-details">Editing App Details</a></li>
+        <li><a href="#thumbnails">Thumbnails</a></li>
+    </ul>
+</div>
+
+<h2 id="getting-started">Getting Started</h2>
+<p>Sandbox is a personal miniapp platform that runs locally on your machine. To start the app, run <code>python run.py</code> from the project directory, then open <a href="http://localhost:8000">http://localhost:8000</a> in your browser.</p>
+<p>On Windows, you can copy <code>start.bat.template</code> to <code>start.bat</code> and double-click it for a quick launch shortcut.</p>
+
+<h2 id="home-page">Home Page</h2>
+<p>The home page displays all available miniapps as cards or list items. Use the sidebar to filter by tag, the search bar to find apps by name, and the sort dropdown to change the display order.</p>
+
+<h2 id="miniapps">Miniapps</h2>
+<p>Each miniapp is a self-contained tool accessible from the home page. Click any app card to open it. Apps are organized by tags and can be favorited for quick access.</p>
+
+<h2 id="tags">Tags</h2>
+<p>Tags categorize your miniapps. Click a tag in the sidebar to filter the home page to only show apps with that tag. You can create new tags and assign them to apps through the edit modal.</p>
+<p>Tags can be reordered by dragging them in the sidebar.</p>
+
+<h2 id="favorites">Favorites</h2>
+<p>Click the star icon on any app card to mark it as a favorite. Favorited apps appear in a dedicated section at the top of the home page for quick access.</p>
+
+<h2 id="search-and-sort">Search and Sort</h2>
+<p>Use the search bar in the top bar to filter apps by name or description. The sort dropdown lets you order apps by name, date added, or last used.</p>
+
+<h2 id="card-and-list-view">Card and List View</h2>
+<p>Toggle between card view (grid of cards with thumbnails) and list view (compact rows) using the view toggle buttons in the top bar. Your preference is saved locally.</p>
+
+<h2 id="editing-app-details">Editing App Details</h2>
+<p>Hover over an app card and click the edit (pencil) icon to open the edit modal. From here you can change the app's title, description, assigned tags, and thumbnail image.</p>
+
+<h2 id="thumbnails">Thumbnails</h2>
+<p>Each app can have a custom thumbnail image displayed on its card. Upload a thumbnail through the edit modal. Images are stored in the <code>static/thumbnails/</code> directory.</p>
+
+</body>
+</html>
