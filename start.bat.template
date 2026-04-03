@@ -1,0 +1,4 @@
+@echo off
+REM Copy this file to start.bat and adjust if needed.
+REM start.bat is gitignored so each machine can have its own.
+python run.py %*
