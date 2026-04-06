@@ -9,34 +9,85 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build & Run
 
+**Prerequisites:** Rust toolchain (`rustup`), Node.js, Visual Studio Build Tools (MSVC)
+
 ```bash
-python run.py
+# Development (opens app window with hot reload)
+npx tauri dev
+
+# Production build (creates installer)
+npx tauri build
 ```
 
-Creates venv if needed, installs deps, starts uvicorn at `http://localhost:8000` with `--reload`.
+**Important:** When running `cargo build` from Git Bash, MSVC's `link.exe` must be on PATH before Git's:
+```bash
+MSVC_LINK=$(find "/c/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC" -name "link.exe" -path "*/x64/*" | head -1)
+export PATH="$(dirname "$MSVC_LINK"):$HOME/.cargo/bin:$PATH"
+```
+
+**Frontend changes require `cargo build`** because Tauri embeds HTML/CSS/JS at compile time. After changing frontend files, you MUST rebuild — the running binary serves baked-in assets, not live files.
 
 ## Architecture
 
-- **Backend:** Python + FastAPI (`main.py`). Miniapps auto-discovered from `apps/` subdirectories.
-- **Frontend:** HTML/CSS/JS with Alpine.js (client-side reactivity) and htmx (server-driven UI). No build step.
-- **Config:** `app_config.json` (git-tracked) stores app metadata, tags, and order. `localStorage` stores per-machine UI preferences.
-- **Thumbnails:** Stored in `static/thumbnails/` (git-tracked). Uploaded via edit modal.
+- **Shell:** Tauri 2 (Rust) — native desktop window via WebView2, no terminal, no browser
+- **Backend:** Rust commands in `src-tauri/src/commands/` — config CRUD, file I/O, Excel processing
+- **Frontend:** HTML/CSS/JS with Alpine.js in `src/` — same dark theme, no build step
+- **Config:** `app_config.json` stored in `%APPDATA%/com.princecorwin.sandbox/` at runtime. Default bundled as resource.
+- **Thumbnails:** Stored in `%APPDATA%/com.princecorwin.sandbox/thumbnails/`, served as base64 data URLs
+- **CSP:** Disabled (`"csp": null` in tauri.conf.json) — this is a local desktop app, CSP adds no security value here
+
+## Project Structure
+
+```
+Sandbox/
+├── src/                          # Frontend
+│   ├── index.html                # Home page (Alpine.js app)
+│   ├── css/base.css              # Dark theme styles
+│   ├── js/
+│   │   ├── alpine.min.js         # Alpine.js (bundled locally, no CDN)
+│   │   ├── common.js             # Utilities (invoke, toast, spinner, dialog)
+│   │   └── app.js                # Alpine sandbox() component
+│   └── apps/                     # Miniapps
+│       ├── {app_id}/
+│       │   ├── app.json          # Metadata (name, description, icon)
+│       │   └── index.html        # App page
+│       └── fw_allocation/        # First real miniapp
+│           ├── app.json
+│           ├── index.html
+│           └── fw_allocation.js
+├── src-tauri/                    # Rust backend
+│   ├── Cargo.toml
+│   ├── tauri.conf.json
+│   └── src/
+│       ├── main.rs
+│       ├── lib.rs                # Plugin/command registration
+│       └── commands/
+│           ├── config.rs         # Config read/write
+│           ├── discovery.rs      # Scan apps/ for app.json
+│           ├── thumbnails.rs     # Thumbnail save/serve
+│           └── fw_allocation.rs  # Excel processing
+├── app_config.json               # Default config (bundled as resource)
+├── package.json
+└── CLAUDE.md
+```
 
 ## Miniapp Structure
 
-Each miniapp is a folder under `apps/` with:
-- `router.py` — FastAPI `APIRouter` + `MINIAPP_META` dict (name, description, icon). Glue only, no business logic.
-- `logic.py` — Pure Python business logic. No FastAPI imports. Accepts/returns plain Python types.
-- `templates/index.html` — Self-contained HTML page. Links to `/static/css/base.css` and `/static/js/common.js`.
+Each miniapp is a folder under `src/apps/` with:
+- `app.json` — Metadata: `{ "id", "name", "description", "icon" }`
+- `index.html` — Self-contained HTML page. Links to `../../css/base.css` and `../../js/common.js`.
+- Optional JS files for app-specific logic
 
-Miniapps must not depend on each other. Adding/removing a folder under `apps/` should not affect other miniapps.
+Miniapps must not depend on each other. Adding/removing a folder under `src/apps/` should not affect other miniapps.
+
+**Backend logic** for miniapps that need it (e.g., Excel processing) goes in `src-tauri/src/commands/` as Rust Tauri commands. Frontend calls them via `invoke('command_name', { args })`.
 
 ## Development Approach
 - ONE change at a time, test before proceeding
 - No quick fixes — proper architectural solutions
 - Delete/refactor legacy code when no longer relevant
 - After completing a feature: identify improvements, check for dead code, suggest refactoring
-- ALWAYS run `python run.py` after changes and verify before reporting completion
+- ALWAYS rebuild and test after changes before reporting completion
 
 **See also:** `Plans/Project_Status.md` (todos, backlog), `Plans/Completed_Work.md` (changelog)
 
@@ -53,6 +104,8 @@ Miniapps must not depend on each other. Adding/removing a folder under `apps/` s
 **Always confirm destructive actions.** Use `confirmAction()` from `common.js` before any delete, remove, or irreversible operation. No exceptions unless explicitly told otherwise.
 
 **Toast notifications** go bottom-right via `#toast-container`. Three types: `success`, `error`, `info`.
+
+**Tauri invoke pattern:** All backend calls use `invoke('command_name', { arg1, arg2 })` from `window.__TAURI__.core` (exposed globally via `withGlobalTauri: true`).
 
 ## Git Commits
 - **NEVER commit without explicit user permission** — user needs to test changes first
@@ -97,19 +150,19 @@ Miniapps must not depend on each other. Adding/removing a folder under `apps/` s
 
 ## Code Standards
 
-- Python: type hints on function signatures, `logging` module (not print), functions over classes unless complexity warrants it.
-- Frontend: vanilla JS + Alpine.js + htmx. No React/Vue/npm/build tools.
-- Logic functions return structured results with issues/errors alongside primary output — don't raise exceptions for expected failures.
+- Rust: Tauri commands use `#[tauri::command]`, serde for JSON, `AppHandle` for path resolution
+- Frontend: vanilla JS + Alpine.js. No React/Vue/build tools.
+- Excel: `calamine` crate (read) + `rust_xlsxwriter` crate (write). No Python/openpyxl.
+- Logic functions return structured results with issues/errors alongside primary output — don't panic for expected failures.
 - Comments only where logic is non-obvious.
-- Do not use pandas for Excel work — use openpyxl.
 
 ## What Not to Do
 
 - No cloud deployment, auth, or multi-user features unless explicitly asked.
-- No ORMs, migration frameworks, or task queues. SQLite via stdlib `sqlite3` directly.
-- No shared Python modules coupling miniapps together.
+- No ORMs, migration frameworks, or task queues. SQLite via `rusqlite` if needed.
+- No shared modules coupling miniapps together.
 - No packages requiring system-level or admin installs.
-- Never commit `venv/`, `data/`, or `start.bat`.
+- Never commit `node_modules/`, `src-tauri/target/`, `venv/`, `data/`, or `start.bat`.
 
 ## Communication Preferences
 - Be direct, skip pleasantries

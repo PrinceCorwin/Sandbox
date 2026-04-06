@@ -1,10 +1,8 @@
-# Virtual environment
-venv/
+# Rust / Tauri
+src-tauri/target/
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
+# Node
+node_modules/
 
 # Local data
 data/

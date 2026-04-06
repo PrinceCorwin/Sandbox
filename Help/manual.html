@@ -130,28 +130,34 @@
         <li><a href="#card-and-list-view">Card and List View</a></li>
         <li><a href="#editing-app-details">Editing App Details</a></li>
         <li><a href="#thumbnails">Thumbnails</a></li>
+        <li><a href="#fw-allocation">FW Allocation</a></li>
     </ul>
 </div>
 
 <h2 id="getting-started">Getting Started</h2>
-<p>Sandbox is a personal miniapp platform that runs locally on your machine. To start the app, run <code>python run.py</code> from the project directory, then open <a href="http://localhost:8000">http://localhost:8000</a> in your browser.</p>
-<p>On Windows, you can copy <code>start.bat.template</code> to <code>start.bat</code> and double-click it for a quick launch shortcut.</p>
+<p>Sandbox is a native desktop application. Double-click the Sandbox shortcut or executable to launch it. The app opens in its own window — no browser or terminal needed.</p>
+<p>Your settings, tags, favorites, and thumbnails are stored locally and persist between sessions.</p>
 
 <h2 id="home-page">Home Page</h2>
 <p>The home page displays all available miniapps as cards or list items. Use the sidebar to filter by tag, the search bar to find apps by name, and the sort dropdown to change the display order.</p>
 
 <h2 id="miniapps">Miniapps</h2>
-<p>Each miniapp is a self-contained tool accessible from the home page. Click any app card to open it. Apps are organized by tags and can be favorited for quick access.</p>
+<p>Each miniapp is a self-contained tool accessible from the home page. Click any app card to open it. Use the Home button or Close button in the miniapp's top bar to return to the home page.</p>
 
 <h2 id="tags">Tags</h2>
-<p>Tags categorize your miniapps. Click a tag in the sidebar to filter the home page to only show apps with that tag. You can create new tags and assign them to apps through the edit modal.</p>
-<p>Tags can be reordered by dragging them in the sidebar.</p>
+<p>Tags categorize your miniapps. Click a tag in the sidebar to filter the home page to only show apps with that tag. Tags are displayed in alphabetical order.</p>
+<h3>Creating Tags</h3>
+<p>Click <strong>+ Add Tag</strong> in the sidebar to create a new tag. Enter a name and press Enter or click Add.</p>
+<h3>Deleting Tags</h3>
+<p>Hover over a tag in the sidebar and click the X button that appears. You will be asked to confirm. Deleting a tag removes it from all apps that had it assigned.</p>
+<h3>Assigning Tags to Apps</h3>
+<p>Open the edit modal for an app (pencil icon) and use the Tags dropdown to check/uncheck tags. Tags in the dropdown are listed alphabetically.</p>
 
 <h2 id="favorites">Favorites</h2>
-<p>Click the star icon on any app card to mark it as a favorite. Favorited apps appear in a dedicated section at the top of the home page for quick access.</p>
+<p>Click the star icon on any app card to mark it as a favorite. Favorited apps appear in a dedicated section at the top of the home page when viewing All Apps in Custom Order.</p>
 
 <h2 id="search-and-sort">Search and Sort</h2>
-<p>Use the search bar in the top bar to filter apps by name or description. The sort dropdown lets you order apps by name, date added, or last used.</p>
+<p>Use the search bar in the top bar to filter apps by name or description. The sort dropdown lets you order apps by custom order, alphabetical, recently used, or date added.</p>
 
 <h2 id="card-and-list-view">Card and List View</h2>
 <p>Toggle between card view (grid of cards with thumbnails) and list view (compact rows) using the view toggle buttons in the top bar. Your preference is saved locally.</p>
@@ -160,7 +166,19 @@
 <p>Hover over an app card and click the edit (pencil) icon to open the edit modal. From here you can change the app's title, description, assigned tags, and thumbnail image.</p>
 
 <h2 id="thumbnails">Thumbnails</h2>
-<p>Each app can have a custom thumbnail image displayed on its card. Upload a thumbnail through the edit modal. Images are stored in the <code>static/thumbnails/</code> directory.</p>
+<p>Each app can have a custom thumbnail image displayed on its card. In the edit modal, click <strong>Choose Image...</strong> to open a file picker and select an image file (PNG, JPG, GIF, or WebP).</p>
+
+<h2 id="fw-allocation">FW Allocation</h2>
+<p>Allocates field weld counts from a pivot table to BW/SW labor rows in an Excel file. Prioritizes the largest pipe size first (header weld), then distributes by longest pipe run footage.</p>
+<h3>Usage</h3>
+<ol>
+    <li>Click <strong>Choose File...</strong> to select the FW Count file (Excel with Drawing Number and weld count columns)</li>
+    <li>Click <strong>Choose File...</strong> to select the Labor file (Excel with Drawing Number, Component, Size, Quantity, and ShopField columns)</li>
+    <li>Click <strong>Run Allocation</strong> to process</li>
+    <li>Review the results summary (welds flipped, drawings processed, any issues)</li>
+    <li>Click <strong>Download Updated Labor</strong> to save the modified file</li>
+    <li>Click <strong>Download Issues Log</strong> to save any issues encountered</li>
+</ol>
 
 </body>
 </html>

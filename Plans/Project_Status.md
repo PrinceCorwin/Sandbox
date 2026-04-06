@@ -2,13 +2,13 @@
 
 ## In Progress
 
-- [ ] Review and refine home page UI based on initial feedback
-- [ ] Test all interactive features (edit modal, favorites, tag management, drag-reorder)
+- [ ] Test FW Allocation miniapp with real Excel files
+- [ ] Build production installer (`npx tauri build`)
+- [ ] Set up auto-updater (signing keys, GitHub Releases endpoint)
+- [ ] Set up GitHub Actions workflow for release builds
 
 ## Upcoming
 
-- [ ] Design and plan first real miniapp (FW Allocation)
-- [ ] Add "delete tag" functionality to sidebar (right-click or edit mode)
-- [ ] Settings menu content (theme selection, help, about)
+- [ ] Settings menu content (theme selection, help, about, check for updates)
 - [ ] Integrate Help/manual.html into app settings menu
-- [ ] Chrome app-mode desktop shortcut for native-app feel
+- [ ] Add more miniapps as needed

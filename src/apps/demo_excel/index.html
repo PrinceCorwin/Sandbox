@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANDBOX</title>
+    <link rel="stylesheet" href="../../css/base.css">
+</head>
+<body>
+    <div class="topbar" style="display:flex;align-items:center;padding:0 1.5rem;height:var(--topbar-height);background:var(--bg-secondary);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;">
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+        <span id="app-title" style="flex:1;text-align:center;font-weight:600;"></span>
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            Close
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+    </div>
+
+    <div style="display:flex;justify-content:center;align-items:center;min-height:calc(100vh - var(--topbar-height));">
+        <div style="text-align:center;padding:2rem;background:var(--bg-secondary);border-radius:var(--radius-lg);border:1px solid var(--border);">
+            <div id="app-icon" style="font-size:3rem;margin-bottom:1rem;"></div>
+            <div id="app-message" style="font-size:1.25rem;color:var(--accent-cyan);">This is a demo app</div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="../../js/common.js"></script>
+    <script>
+        fetch('app.json').then(r => r.json()).then(meta => {
+            document.title = meta.name + ' — SANDBOX';
+            document.getElementById('app-title').textContent = meta.name;
+            document.getElementById('app-icon').textContent = meta.icon;
+        });
+    </script>
+</body>
+</html>

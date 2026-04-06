@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FW Allocation — SANDBOX</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <script defer src="../../js/alpine.min.js"></script>
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body x-data="fwApp()" x-init="init()">
+    <div class="topbar" style="display:flex;align-items:center;padding:0 1.5rem;height:var(--topbar-height);background:var(--bg-secondary);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;">
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+        <span style="flex:1;text-align:center;font-weight:600;">FW Allocation</span>
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            Close
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+    </div>
+
+    <div style="max-width:700px;margin:2rem auto;padding:0 1.5rem;">
+        <div style="margin-bottom:1.5rem;color:var(--text-secondary);line-height:1.5;">
+            Allocates field weld counts from a pivot table to BW/SW labor rows.
+            Prioritizes largest pipe size first (header weld), then longest pipe run by linear feet.
+        </div>
+
+        <!-- File inputs -->
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+            <div class="form-group">
+                <label>FW Count File (pivot with Drawing Number + Count)</label>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <button class="btn" @click="pickFwFile()">Choose File...</button>
+                    <span style="color:var(--text-secondary);font-size:0.85rem;" x-text="fwFileName || 'No file selected'"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Labor File (must have PIPE and BW/SW rows)</label>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <button class="btn" @click="pickLaborFile()">Choose File...</button>
+                    <span style="color:var(--text-secondary);font-size:0.85rem;" x-text="laborFileName || 'No file selected'"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Run button -->
+        <button class="btn btn-primary" style="width:100%;padding:0.75rem;font-size:1rem;"
+                @click="runAllocation()"
+                :disabled="!fwPath || !laborPath || processing">
+            <span x-show="!processing">Run Allocation</span>
+            <span x-show="processing">Processing...</span>
+        </button>
+
+        <!-- Results -->
+        <div x-show="result" x-cloak style="margin-top:1.5rem;">
+            <div style="padding:1rem;background:var(--bg-secondary);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:1rem;">
+                <div style="color:var(--accent-cyan);font-weight:600;margin-bottom:0.5rem;">Results</div>
+                <div style="color:var(--text-secondary);line-height:1.8;">
+                    <span x-text="result?.total_flipped"></span> welds flipped to Field across
+                    <span x-text="result?.drawings_processed"></span> drawings
+                </div>
+                <div x-show="result?.issues_count > 0" style="color:var(--accent-orange);margin-top:0.5rem;">
+                    <span x-text="result?.issues_count"></span> drawings had issues
+                    (<span x-text="result?.unallocated_total"></span> unallocated welds)
+                </div>
+            </div>
+
+            <div style="display:flex;gap:1rem;">
+                <button class="btn btn-primary" style="flex:1;" @click="saveOutputFile()">
+                    Download Updated Labor
+                </button>
+                <button class="btn" style="flex:1;" @click="saveIssuesFile()">
+                    Download Issues Log
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="../../js/common.js"></script>
+    <script src="fw_allocation.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./Sandbox.exe)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/)",
+      "Bash(kill %1)",
+      "Bash(taskkill //F //IM Sandbox.exe)",
+      "Bash(npm:*)",
+      "Bash(grep -E \"\\\\.py$|\\\\.json$|\\\\.bat\")",
+      "Bash(rustc:*)",
+      "Bash(systeminfo)",
+      "Bash(reg query:*)",
+      "Bash(cargo --version)",
+      "Bash(curl -Lo __TRACKED_VAR__/rustup-init.exe https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe)",
+      "Bash(export PATH=\"$HOME/.cargo/bin:$PATH\")",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js\" -o src/js/alpine.min.js)",
+      "Bash(cargo check:*)",
+      "Bash(cargo search:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(taskkill //F //IM sandbox.exe)",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js\" -o src/js/alpine.min.js)",
+      "Bash(curl -v \"https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js\" -o src/js/alpine.min.js)",
+      "Bash(rm -f main.py launcher.py build.py run.py start.bat Sandbox.spec requirements.txt)",
+      "Bash(rm -f nul)",
+      "Bash(rm -rf dist/ build/ __pycache__/)",
+      "Bash(ls -la *.py)",
+      "Bash(ls -la *.bat *.template *.spec)",
+      "Bash(git add:*)"
+    ]
+  }
+}
