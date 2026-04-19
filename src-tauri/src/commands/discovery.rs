@@ -11,6 +11,8 @@ pub struct AppMeta {
     pub icon: String,
     #[serde(default)]
     pub version: String,
+    #[serde(default)]
+    pub thumbnail: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -23,6 +25,7 @@ pub struct AppInfo {
     pub order: i64,
     pub favorite: bool,
     pub thumbnail: Option<String>,
+    pub default_thumbnail: Option<String>,
     pub date_added: String,
     pub last_used: Option<String>,
     pub url: String,
@@ -121,6 +124,11 @@ pub fn discover_apps(app: AppHandle) -> Result<Vec<AppInfo>, String> {
             .cloned()
             .unwrap_or(serde_json::json!({}));
 
+        let default_thumbnail = meta
+            .thumbnail
+            .as_ref()
+            .map(|file| format!("apps/{}/{}", meta.id, file));
+
         let info = AppInfo {
             id: meta.id.clone(),
             title: get_str(&saved, "title").unwrap_or(meta.name),
@@ -130,6 +138,7 @@ pub fn discover_apps(app: AppHandle) -> Result<Vec<AppInfo>, String> {
             order: saved.get("order").and_then(|v| v.as_i64()).unwrap_or(999),
             favorite: saved.get("favorite").and_then(|v| v.as_bool()).unwrap_or(false),
             thumbnail: get_str(&saved, "thumbnail"),
+            default_thumbnail,
             date_added: get_str(&saved, "date_added").unwrap_or(today.clone()),
             last_used: get_str(&saved, "last_used"),
             url: format!("apps/{}/index.html", meta.id),

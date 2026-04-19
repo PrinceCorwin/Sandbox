@@ -29,6 +29,28 @@
             padding: 2rem;
         }
 
+        .manual-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .manual-header img {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+        }
+
+        .manual-header h1 {
+            color: var(--accent-cyan);
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+
         h1 {
             color: var(--accent-cyan);
             border-bottom: 2px solid var(--border);
@@ -116,7 +138,10 @@
 </head>
 <body>
 
-<h1>Sandbox Help Manual</h1>
+<div class="manual-header">
+    <img src="../img/logo.png" alt="Sandbox">
+    <h1>Sandbox Help Manual</h1>
+</div>
 
 <div class="toc">
     <strong>Table of Contents</strong>
@@ -130,6 +155,7 @@
         <li><a href="#card-and-list-view">Card and List View</a></li>
         <li><a href="#editing-app-details">Editing App Details</a></li>
         <li><a href="#thumbnails">Thumbnails</a></li>
+        <li><a href="#help-manual">Help Manual</a></li>
         <li><a href="#fw-allocation">FW Allocation</a></li>
     </ul>
 </div>
@@ -168,17 +194,73 @@
 <h2 id="thumbnails">Thumbnails</h2>
 <p>Each app can have a custom thumbnail image displayed on its card. In the edit modal, click <strong>Choose Image...</strong> to open a file picker and select an image file (PNG, JPG, GIF, or WebP).</p>
 
+<h2 id="help-manual">Help Manual</h2>
+<p>This manual is available at any time from the sidebar. Click <strong>Help</strong> in the lower sidebar to open it.</p>
+
 <h2 id="fw-allocation">FW Allocation</h2>
-<p>Allocates field weld counts from a pivot table to BW/SW labor rows in an Excel file. Prioritizes the largest pipe size first (header weld), then distributes by longest pipe run footage.</p>
-<h3>Usage</h3>
+<p>Allocates Field Weld (FW) counts from a pivot table onto Butt Weld (BW) and Socket Weld (SW) labor rows. For each drawing, the tool flips a number of BW/SW rows from Shop (<code>ShopField = 1</code>) to Field (<code>ShopField = 2</code>) equal to the field weld count for that drawing. The largest pipe size gets the first weld (the "header weld"); remaining welds are distributed by longest pipe run footage.</p>
+
+<h3>What you need</h3>
+<p>Two Excel (<code>.xlsx</code>) files, described below. Both must have a header row.</p>
+
+<h3>File 1 — FW Count File</h3>
+<p>A simple pivot table or list showing how many field welds belong to each drawing. The tool reads the <strong>first sheet</strong> of the workbook.</p>
+<ul>
+    <li><strong>Row 1:</strong> header row (any names — contents are ignored)</li>
+    <li><strong>Column A:</strong> Drawing Number (text)</li>
+    <li><strong>Column B:</strong> Field weld count (integer)</li>
+    <li>Any additional columns are ignored</li>
+    <li>Rows with a blank Drawing Number or a count of 0 are skipped</li>
+</ul>
+<p>Example:</p>
+<pre style="background:var(--bg-secondary);padding:0.75rem;border-radius:4px;font-size:0.9em;">Drawing Number   FW Count
+ABC-001          3
+ABC-002          7
+XYZ-101          1</pre>
+
+<h3>File 2 — Labor File</h3>
+<p>Your labor estimate file with PIPE, BW, and SW rows. The tool reads the <strong>first sheet</strong>. Columns can appear in any order, but the following header names must exist <strong>exactly</strong> (case-sensitive):</p>
+<ul>
+    <li><code>Drawing Number</code> — text matching the drawing numbers in File 1</li>
+    <li><code>Component</code> — values used by the tool: <code>PIPE</code>, <code>BW</code>, <code>SW</code> (other components are ignored)</li>
+    <li><code>Size</code> — numeric pipe size (e.g., 2, 4, 6, 8, 10)</li>
+    <li><code>Quantity</code> — for <code>PIPE</code> rows, this is the linear footage used to rank welds by pipe run length</li>
+    <li><code>ShopField</code> — <code>1</code> = Shop, <code>2</code> = Field. Only rows with <code>ShopField = 1</code> are eligible to be flipped.</li>
+</ul>
+<p>Any other columns (e.g., descriptions, unit labor, area, system) are preserved unchanged in the output.</p>
+
+<h3>Step-by-step</h3>
 <ol>
-    <li>Click <strong>Choose File...</strong> to select the FW Count file (Excel with Drawing Number and weld count columns)</li>
-    <li>Click <strong>Choose File...</strong> to select the Labor file (Excel with Drawing Number, Component, Size, Quantity, and ShopField columns)</li>
-    <li>Click <strong>Run Allocation</strong> to process</li>
-    <li>Review the results summary (welds flipped, drawings processed, any issues)</li>
-    <li>Click <strong>Download Updated Labor</strong> to save the modified file</li>
-    <li>Click <strong>Download Issues Log</strong> to save any issues encountered</li>
+    <li>Open the <strong>FW Allocation</strong> miniapp from the home page</li>
+    <li>Click <strong>Choose File...</strong> next to "FW Count File" and select your pivot (File 1)</li>
+    <li>Click <strong>Choose File...</strong> next to "Labor File" and select your labor estimate (File 2)</li>
+    <li>Click <strong>Run Allocation</strong> and wait for processing to finish</li>
+    <li>Review the Results panel:
+        <ul>
+            <li><strong>Welds flipped</strong> — total BW/SW rows moved from Shop to Field</li>
+            <li><strong>Drawings processed</strong> — drawings in the FW file that matched labor data</li>
+            <li><strong>Issues</strong> (shown in orange if any) — drawings the tool could not fully allocate</li>
+        </ul>
+    </li>
+    <li>Click <strong>Download Updated Labor</strong> and choose a save location. Output is a copy of your labor file with <code>ShopField</code> changed from <code>1</code> to <code>2</code> on the flipped rows.</li>
+    <li>Click <strong>Download Issues Log</strong> (optional) to save a report of drawings that could not be fully allocated.</li>
 </ol>
+
+<h3>Allocation logic</h3>
+<p>For each drawing with a field weld count greater than 0:</p>
+<ol>
+    <li>Find all BW/SW rows on that drawing with <code>ShopField = 1</code> (eligible candidates)</li>
+    <li>Identify the largest pipe size among those candidates. That row gets the first weld (the "header weld"). BW is preferred over SW at the same size.</li>
+    <li>For remaining welds, order the other sizes by total PIPE footage on the drawing (longest run first), and within each size prefer BW over SW.</li>
+    <li>Stop when the field weld count is satisfied, or when candidates run out.</li>
+</ol>
+
+<h3>Issues log</h3>
+<p>The Issues Log (<code>FW_Unallocated_Issues.xlsx</code>) contains one row per drawing that could not be fully allocated, with these columns: <code>Drawing Number</code>, <code>FW Count</code>, <code>Flipped</code>, <code>Unallocated</code>, <code>Issue</code>. The possible issues are:</p>
+<ul>
+    <li><strong>NO BW/SW labor rows found</strong> — the drawing has a field weld count but no eligible BW or SW rows in the labor file. Check for drawing-number mismatches between the two files, and that the BW/SW rows have <code>ShopField = 1</code>.</li>
+    <li><strong>EXHAUSTED — not enough BW/SW rows</strong> — there were eligible candidates but fewer than the field weld count. Verify the FW count or check for missing weld rows in the labor file.</li>
+</ul>
 
 </body>
 </html>

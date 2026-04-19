@@ -2,5 +2,6 @@
   "id": "fw_allocation",
   "name": "FW Allocation",
   "description": "Allocates field weld counts to BW/SW labor rows by pipe size and footage",
-  "icon": "\ud83d\udd27"
+  "icon": "\ud83d\udd27",
+  "thumbnail": "logo.png"
 }

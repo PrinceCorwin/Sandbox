@@ -1,5 +1,21 @@
 # Completed Work
 
+## 2026-04-19
+
+- [x] Wired up custom app icon: rounded black-background version embedded in sandbox.exe (drives taskbar/window/installer); transparent version used for in-app sidebar logo (40px) and favicon
+- [x] Generated full Tauri icon set via `npx tauri icon` from 1024x1024 source
+- [x] Added Help nav item to sidebar (above Settings) that opens the manual in an iframe modal
+- [x] Moved `Help/manual.html` to `src/help/manual.html` so it bundles with the frontend and ships inside the app
+- [x] Expanded FW Allocation section of the manual with exact column specs (case-sensitive header names, required values), step-by-step walkthrough, allocation logic, and issues log interpretation
+- [x] Added logo header to manual top
+- [x] Added shipped-with-miniapp default thumbnail support: new optional `thumbnail` field in `app.json`, discovery.rs exposes `default_thumbnail` URL, frontend falls back to it when no user thumbnail is set
+- [x] Wired up green pipes FW Allocation logo as the FW miniapp's shipped thumbnail
+- [x] Removed demo miniapps (`demo_excel`, `demo_personal`, `demo_work`): deleted folders and cleared entries from `app_config.json`
+- [x] Rewrote README.md for the Tauri stack (removed old Python quick-start), added centered logo banner
+- [x] Created `build_once.bat` helper that sources vcvars64.bat and prepends MSVC link.exe on PATH so `npx tauri build` works from Git Bash without hitting Git's `link.exe`
+- [x] Updated CLAUDE.md references from `Help/manual.html` to `src/help/manual.html`
+- [x] Built production installer and standalone exe — first full Tauri build on this machine after installing Node/Rust/VS C++ workload
+
 ## 2026-04-06
 
 - [x] Migrated entire app from Python/FastAPI to Tauri 2 (Rust + HTML/CSS/JS)

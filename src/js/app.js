@@ -15,6 +15,7 @@ function sandbox() {
         showAddTag: false,
         newTagName: '',
         showSettings: false,
+        showHelp: false,
         tagDragIdx: null,
 
         async init() {

@@ -92,7 +92,7 @@ Miniapps must not depend on each other. Adding/removing a folder under `src/apps
 **See also:** `Plans/Project_Status.md` (todos, backlog), `Plans/Completed_Work.md` (changelog)
 
 ### Help Manual Maintenance
-- When features are added, deleted, or modified, update `Help/manual.html` to keep documentation current
+- When features are added, deleted, or modified, update `src/help/manual.html` to keep documentation current
 - Add new features to the appropriate section and update the Table of Contents if adding new sections
 - Remove documentation for deleted features
 - Update existing documentation when feature behavior changes
@@ -130,7 +130,7 @@ Miniapps must not depend on each other. Adding/removing a folder under `src/apps
 2. Update `Plans/Completed_Work.md` — Add entry describing what was completed (with date header)
 3. **HELP MANUAL CHECK (frequently missed!):**
    - Ask: "Did this work change anything a user would see or interact with?"
-   - If YES: Update `Help/manual.html` (add/update/remove sections, update TOC if needed)
+   - If YES: Update `src/help/manual.html` (add/update/remove sections, update TOC if needed)
    - If NO: Confirm why not (e.g., "internal refactor only, no UI change")
 4. Update any other relevant plan docs if the work relates to a specific feature plan
 5. ONLY THEN proceed with `git add -A` and `git commit`

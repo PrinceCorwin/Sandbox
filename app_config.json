@@ -1,50 +1,5 @@
 {
-  "tags": [
-    "Work",
-    "Excel",
-    "Personal"
-  ],
-  "tag_order": [
-    "Work",
-    "Excel",
-    "Personal"
-  ],
-  "apps": {
-    "demo_work": {
-      "title": "Demo Work App",
-      "description": "A demo miniapp for the Work category",
-      "tags": [
-        "Work"
-      ],
-      "order": 0,
-      "favorite": false,
-      "thumbnail": null,
-      "date_added": "2026-04-02",
-      "last_used": null
-    },
-    "demo_excel": {
-      "title": "Demo Excel App",
-      "description": "A demo miniapp for the Excel category",
-      "tags": [
-        "Excel"
-      ],
-      "order": 1,
-      "favorite": false,
-      "thumbnail": null,
-      "date_added": "2026-04-02",
-      "last_used": null
-    },
-    "demo_personal": {
-      "title": "Demo Personal App",
-      "description": "A demo miniapp for the Personal category",
-      "tags": [
-        "Personal"
-      ],
-      "order": 2,
-      "favorite": false,
-      "thumbnail": null,
-      "date_added": "2026-04-02",
-      "last_used": null
-    }
-  }
+  "tags": [],
+  "tag_order": [],
+  "apps": {}
 }

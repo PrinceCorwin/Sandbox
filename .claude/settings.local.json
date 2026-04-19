@@ -25,7 +25,14 @@
       "Bash(rm -rf dist/ build/ __pycache__/)",
       "Bash(ls -la *.py)",
       "Bash(ls -la *.bat *.template *.spec)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(where cargo *)",
+      "Read(//c/Program Files/**)",
+      "Bash(powershell.exe -NoProfile -Command \"Get-Command node,npm -ErrorAction SilentlyContinue | Select-Object Name,Source\")",
+      "Bash(npx --version)",
+      "Bash(cmd.exe //c \"C:\\\\Users\\\\steve\\\\source\\\\repos\\\\PrinceCorwin\\\\Sandbox\\\\build_once.bat\")",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$HOME/.cargo/bin:$PATH\")",
+      "Bash(npx tauri *)"
     ]
   }
 }
