@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataLore — SANDBOX</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <script defer src="../../js/alpine.min.js"></script>
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body x-data="dataloreApp()" x-init="init()">
+    <div class="topbar" style="display:flex;align-items:center;padding:0 1.5rem;height:var(--topbar-height);background:var(--bg-secondary);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;">
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+        <span style="flex:1;text-align:center;font-weight:600;">DataLore</span>
+        <a href="../../index.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;text-decoration:none;">
+            Close
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+    </div>
+
+    <div style="max-width:700px;margin:2rem auto;padding:0 1.5rem;">
+        <div style="margin-bottom:1.5rem;color:var(--text-secondary);line-height:1.5;">
+            Pick a SQLite database file. DataLore dumps every user table to an Excel
+            workbook (one sheet per table), a folder of CSV files (one file per table),
+            or both.
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+            <div class="form-group">
+                <label>SQLite Database (.db / .sqlite / .sqlite3)</label>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <button class="btn" @click="pickDb()">Choose File...</button>
+                    <span style="color:var(--text-secondary);font-size:0.85rem;" x-text="dbFileName || 'No file selected'"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Output Format</label>
+                <div style="display:flex;gap:1.25rem;align-items:center;color:var(--text-secondary);">
+                    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;">
+                        <input type="radio" name="format" value="excel" x-model="format"> Excel
+                    </label>
+                    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;">
+                        <input type="radio" name="format" value="csv" x-model="format"> CSV
+                    </label>
+                    <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;">
+                        <input type="radio" name="format" value="both" x-model="format"> Both
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;padding:0.75rem;font-size:1rem;"
+                @click="runExport()"
+                :disabled="!dbPath || processing">
+            <span x-show="!processing">Run Export</span>
+            <span x-show="processing">Processing...</span>
+        </button>
+
+        <div x-show="result" x-cloak style="margin-top:1.5rem;">
+            <div style="padding:1rem;background:var(--bg-secondary);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:1rem;">
+                <div style="color:var(--accent-cyan);font-weight:600;margin-bottom:0.5rem;">Results</div>
+                <div style="color:var(--text-secondary);line-height:1.8;">
+                    <span x-text="result?.tables?.length"></span> tables /
+                    <span x-text="result?.total_rows"></span> rows exported
+                </div>
+                <div x-show="anyTruncated()" style="color:var(--accent-orange);margin-top:0.5rem;">
+                    Some tables exceeded Excel's 1,048,576-row limit and were truncated. CSV output (if selected) is complete.
+                </div>
+            </div>
+
+            <div style="max-height:240px;overflow-y:auto;margin-bottom:1rem;border:1px solid var(--border);border-radius:var(--radius);">
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                    <thead style="position:sticky;top:0;background:var(--bg-secondary);">
+                        <tr>
+                            <th style="text-align:left;padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Table</th>
+                            <th style="text-align:right;padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Rows</th>
+                            <th style="text-align:center;padding:0.5rem 0.75rem;border-bottom:1px solid var(--border);">Truncated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="t in (result?.tables || [])" :key="t.name">
+                            <tr>
+                                <td style="padding:0.4rem 0.75rem;border-bottom:1px solid var(--border);" x-text="t.name"></td>
+                                <td style="padding:0.4rem 0.75rem;border-bottom:1px solid var(--border);text-align:right;" x-text="t.rows.toLocaleString()"></td>
+                                <td style="padding:0.4rem 0.75rem;border-bottom:1px solid var(--border);text-align:center;color:var(--accent-orange);" x-text="t.truncated ? 'yes' : ''"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex;gap:1rem;">
+                <button class="btn btn-primary" style="flex:1;" @click="saveAs()">
+                    Save As...
+                </button>
+                <button class="btn" style="flex:1;" @click="revealRun()">
+                    Reveal in Run Folder
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="../../js/common.js"></script>
+    <script src="datalore.js"></script>
+</body>
+</html>

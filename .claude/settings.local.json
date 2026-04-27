@@ -32,7 +32,8 @@
       "Bash(npx --version)",
       "Bash(cmd.exe //c \"C:\\\\Users\\\\steve\\\\source\\\\repos\\\\PrinceCorwin\\\\Sandbox\\\\build_once.bat\")",
       "Bash(export PATH=\"/c/Program Files/nodejs:$HOME/.cargo/bin:$PATH\")",
-      "Bash(npx tauri *)"
+      "Bash(npx tauri *)",
+      "WebSearch"
     ]
   }
 }

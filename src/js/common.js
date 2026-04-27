@@ -9,7 +9,10 @@ const { invoke } = window.__TAURI__.core;
  * @param {"success"|"error"|"info"} type
  * @param {number} duration - ms before auto-dismiss
  */
-function showToast(message, type = 'success', duration = 3000) {
+function showToast(message, type = 'success', duration) {
+    if (duration === undefined) {
+        duration = type === 'error' ? 8000 : 3000;
+    }
     const container = document.getElementById('toast-container');
     if (!container) return;
 
@@ -17,6 +20,12 @@ function showToast(message, type = 'success', duration = 3000) {
     toast.className = `toast ${type}`;
     toast.textContent = message;
     container.appendChild(toast);
+
+    // Click to dismiss early — useful when an error toast is in the way.
+    toast.addEventListener('click', () => {
+        toast.classList.add('fade-out');
+        toast.addEventListener('animationend', () => toast.remove());
+    });
 
     setTimeout(() => {
         toast.classList.add('fade-out');

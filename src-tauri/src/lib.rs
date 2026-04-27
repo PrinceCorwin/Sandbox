@@ -57,6 +57,10 @@ pub fn run() {
             commands::thumbnails::save_thumbnail,
             commands::thumbnails::get_thumbnail_base64,
             commands::fw_allocation::run_fw_allocation,
+            commands::datalore::export_sqlite,
+            commands::fs_helpers::app_copy_file,
+            commands::fs_helpers::app_copy_tree,
+            commands::fs_helpers::app_open_path,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

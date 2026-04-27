@@ -60,8 +60,7 @@ function fwApp() {
             });
             if (dest) {
                 try {
-                    const { copyFile } = window.__TAURI__.fs;
-                    await copyFile(this.result.output_path, dest);
+                    await invoke('app_copy_file', { src: this.result.output_path, dst: dest });
                     showToast('File saved');
                 } catch (e) {
                     showToast('Save failed: ' + e, 'error');
@@ -77,8 +76,7 @@ function fwApp() {
             });
             if (dest) {
                 try {
-                    const { copyFile } = window.__TAURI__.fs;
-                    await copyFile(this.result.issues_path, dest);
+                    await invoke('app_copy_file', { src: this.result.issues_path, dst: dest });
                     showToast('File saved');
                 } catch (e) {
                     showToast('Save failed: ' + e, 'error');

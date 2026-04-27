@@ -1,5 +1,16 @@
 # Completed Work
 
+## 2026-04-26
+
+- [x] Built **DataLore** miniapp: pick a SQLite database file, export every user table to Excel (one sheet/table) and/or CSV (one file/table). Format radio (Excel default / CSV / Both); per-table summary with truncated badge for tables exceeding Excel's 1,048,576-row cap.
+- [x] Added `rusqlite` (bundled SQLite) and `csv` crates; new Rust command `export_sqlite` in `src-tauri/src/commands/datalore.rs` covering type coercion (Integer/Real/Text/Null), `<BLOB N bytes>` placeholder, sheet-name sanitisation (max 31 chars, illegal chars stripped) and collision-dedupe.
+- [x] Built `src/apps/datalore/` (app.json, index.html, datalore.js) mirroring the fw_allocation pattern: file picker, format radio, results table, Save As + Reveal in Run Folder buttons.
+- [x] Extracted shared backend FS helpers into `src-tauri/src/commands/fs_helpers.rs`: `app_copy_file`, `app_copy_tree`, `app_open_path`. Migrated `fw_allocation.js` Save As buttons to `invoke('app_copy_file', ...)` so they work to user-picked paths (Downloads/Desktop) instead of failing on `fs:default` scope.
+- [x] Discovered and worked around two Tauri 2 quirks: (1) custom command names colliding with `tauri-plugin-fs` (e.g. `copy_file`) get routed to the plugin and demand its permission — solution: prefix custom commands with `app_`; (2) the JS `window.__TAURI__.fs.copyFile` can't write to user-picked dialogs paths under `fs:default` — solution: invoke a backend Rust copy.
+- [x] Improved `showToast`: error toasts now stay 8s (vs 3s for success/info) and any toast can be clicked to dismiss early — Tauri error messages were unreadable at 3s.
+- [x] Added `Help/DataLore` section to `src/help/manual.html` with usage, type-handling notes, and limits (Excel row cap, sheet-name sanitisation, no remote DB support yet).
+- [x] Created project-local finisher skill at `.claude/skills/finisher/skill.md` (committed for future sessions to pick up automatically).
+
 ## 2026-04-19
 
 - [x] Wired up custom app icon: rounded black-background version embedded in sandbox.exe (drives taskbar/window/installer); transparent version used for in-app sidebar logo (40px) and favicon

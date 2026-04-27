@@ -157,6 +157,7 @@
         <li><a href="#thumbnails">Thumbnails</a></li>
         <li><a href="#help-manual">Help Manual</a></li>
         <li><a href="#fw-allocation">FW Allocation</a></li>
+        <li><a href="#datalore">DataLore</a></li>
     </ul>
 </div>
 
@@ -260,6 +261,50 @@ XYZ-101          1</pre>
 <ul>
     <li><strong>NO BW/SW labor rows found</strong> — the drawing has a field weld count but no eligible BW or SW rows in the labor file. Check for drawing-number mismatches between the two files, and that the BW/SW rows have <code>ShopField = 1</code>.</li>
     <li><strong>EXHAUSTED — not enough BW/SW rows</strong> — there were eligible candidates but fewer than the field weld count. Verify the FW count or check for missing weld rows in the labor file.</li>
+</ul>
+
+<h2 id="datalore">DataLore</h2>
+<p>Exports every user table from a SQLite database file to Excel and/or CSV. Use it to inspect, share, or archive the contents of a <code>.db</code> file in spreadsheet form.</p>
+
+<h3>What you need</h3>
+<p>A SQLite database file with the extension <code>.db</code>, <code>.sqlite</code>, or <code>.sqlite3</code>. SQLite is a single-file database, so the entire database lives in one file you can pick from disk.</p>
+<p>System tables (the <code>sqlite_*</code> bookkeeping tables) are skipped automatically.</p>
+
+<h3>Step-by-step</h3>
+<ol>
+    <li>Open the <strong>DataLore</strong> miniapp from the home page</li>
+    <li>Click <strong>Choose File...</strong> and pick a SQLite database file</li>
+    <li>Choose an output format:
+        <ul>
+            <li><strong>Excel</strong> (default) — one workbook with a sheet per table</li>
+            <li><strong>CSV</strong> — one CSV file per table inside a <code>csv/</code> subfolder</li>
+            <li><strong>Both</strong> — produces both formats</li>
+        </ul>
+    </li>
+    <li>Click <strong>Run Export</strong>. DataLore writes the output to an internal run folder under your app data directory.</li>
+    <li>Review the per-table results panel (table name, row count, truncated badge if any).</li>
+    <li>Click <strong>Save As...</strong> to copy the output to a location of your choice:
+        <ul>
+            <li>Excel-only mode opens a save-file dialog — pick a destination <code>.xlsx</code> path.</li>
+            <li>CSV or Both mode opens a folder picker — the entire run folder is copied into the chosen folder.</li>
+        </ul>
+    </li>
+    <li>Click <strong>Reveal in Run Folder</strong> to open the original output folder in Windows Explorer.</li>
+</ol>
+
+<h3>Type handling</h3>
+<ul>
+    <li><strong>Integers</strong> and <strong>real numbers</strong> are written as numeric cells in Excel and as plain numbers in CSV.</li>
+    <li><strong>Text</strong> is written as a string cell.</li>
+    <li><strong>NULL</strong> values become empty cells.</li>
+    <li><strong>BLOB</strong> columns are not extracted — the cell shows <code>&lt;BLOB N bytes&gt;</code> as a placeholder.</li>
+</ul>
+
+<h3>Limits</h3>
+<ul>
+    <li>Excel sheets cap out at 1,048,576 rows (Microsoft's spreadsheet limit). Tables with more rows are truncated in the Excel output and flagged with a <strong>truncated</strong> badge in the results. CSV output (if selected) is always complete.</li>
+    <li>Sheet names are sanitised for Excel: characters <code>/ \ ? * [ ] :</code> are stripped, and names longer than 31 characters are truncated. If two tables sanitise to the same name, the later sheet gets a numeric suffix (<code>_2</code>, <code>_3</code>, …).</li>
+    <li>DataLore does not currently connect to remote databases (Azure SQL, Postgres, MySQL, etc.) — it only reads SQLite files on disk.</li>
 </ul>
 
 </body>

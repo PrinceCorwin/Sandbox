@@ -1,0 +1,6 @@
+{
+  "id": "datalore",
+  "name": "DataLore",
+  "description": "Export every table from a SQLite database to Excel or CSV",
+  "icon": "🗄️"
+}
