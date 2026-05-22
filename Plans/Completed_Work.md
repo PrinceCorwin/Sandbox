@@ -1,5 +1,10 @@
 # Completed Work
 
+## 2026-05-21
+
+- [x] Renamed `.claude/skills/finisher/skill.md` to `.claude/skills/finisher/SKILL.md` to match Claude Code's canonical skill discovery convention. Lowercase happens to work on Windows (NTFS case-insensitive lookup) but Linux/macOS skill discovery looks for `SKILL.md` specifically. Two-step rename via temp filename for reliability on NTFS. No content changes to the skill file.
+- [x] Updated stale reference in the April 26 entry below from `.claude/skills/finisher/skill.md` to `SKILL.md` for consistency with the new canonical casing.
+
 ## 2026-04-26
 
 - [x] Built **DataLore** miniapp: pick a SQLite database file, export every user table to Excel (one sheet/table) and/or CSV (one file/table). Format radio (Excel default / CSV / Both); per-table summary with truncated badge for tables exceeding Excel's 1,048,576-row cap.
@@ -9,7 +14,7 @@
 - [x] Discovered and worked around two Tauri 2 quirks: (1) custom command names colliding with `tauri-plugin-fs` (e.g. `copy_file`) get routed to the plugin and demand its permission — solution: prefix custom commands with `app_`; (2) the JS `window.__TAURI__.fs.copyFile` can't write to user-picked dialogs paths under `fs:default` — solution: invoke a backend Rust copy.
 - [x] Improved `showToast`: error toasts now stay 8s (vs 3s for success/info) and any toast can be clicked to dismiss early — Tauri error messages were unreadable at 3s.
 - [x] Added `Help/DataLore` section to `src/help/manual.html` with usage, type-handling notes, and limits (Excel row cap, sheet-name sanitisation, no remote DB support yet).
-- [x] Created project-local finisher skill at `.claude/skills/finisher/skill.md` (committed for future sessions to pick up automatically).
+- [x] Created project-local finisher skill at `.claude/skills/finisher/SKILL.md` (committed for future sessions to pick up automatically).
 
 ## 2026-04-19
 
