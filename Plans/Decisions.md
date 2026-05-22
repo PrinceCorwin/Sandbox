@@ -51,6 +51,33 @@ from other tools, exported snapshots).
 
 ---
 
+### Supabase free tier as backend for SQL-based miniapps
+**Decision:** Any Sandbox miniapp that needs SQL/tabular data with
+cross-device sync will use a single Supabase free-tier project
+(Postgres + auto REST/GraphQL + Auth + Realtime). Multiple miniapps
+share the project via Postgres schemas or table prefixes.
+Out of scope: iList (stays on Firebase), VANTAGE production data (stays
+on company Azure), self-hosted Supabase on AmalfiNAS.
+**Why:** Long evaluation rejected several alternatives:
+- **SQL Server on AmalfiNAS** — Sandbox runs on the work laptop;
+  reaching the NAS would require Tailscale (visible to Comfort Systems
+  USA umbrella tooling) or Cloudflare Tunnel (adds external attack
+  surface and a daemon on the work machine).
+- **Personal Azure** — cost-creep risk and another paid account to
+  manage.
+- **Synology Drive folder-sync of SQLite** — sync clients don't honour
+  DB file locks, leading to corruption.
+- **Self-hosting Supabase on the NAS** — possible but defeats the point
+  of picking a BaaS.
+Supabase wins on: hard-capped free tier (project suspends, no surprise
+bills), real Postgres, generated APIs (no custom backend code for CRUD),
+HTTPS-only traffic that works from any network without VPN, and RLS
+giving per-user row scoping at the DB layer. Full context in
+`Plans/sandbox-supabase-plan.md` — don't re-litigate without new info.
+**Date:** May 2026.
+
+---
+
 ### Error-toast duration extended to 8s + click-to-dismiss
 **Decision:** `showToast` defaults error toasts to 8 seconds (up from
 3s); success/info stay at 3s. Any toast can be dismissed by clicking it.

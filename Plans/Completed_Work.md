@@ -1,5 +1,9 @@
 # Completed Work
 
+## 2026-05-22
+
+- [x] Added `Plans/sandbox-supabase-plan.md` — architecture plan documenting Supabase free-tier as the chosen backend for SQL-based Sandbox miniapps. Captures rationale (rejected NAS/SQL Server, Azure, Cloudflare Tunnel, Synology Drive sync), free-tier limits, standard client/server topology, .NET SDK notes, and bootstrap next-steps. No code changes.
+
 ## 2026-05-21
 
 - [x] Renamed `.claude/skills/finisher/skill.md` to `.claude/skills/finisher/SKILL.md` to match Claude Code's canonical skill discovery convention. Lowercase happens to work on Windows (NTFS case-insensitive lookup) but Linux/macOS skill discovery looks for `SKILL.md` specifically. Two-step rename via temp filename for reliability on NTFS. No content changes to the skill file.

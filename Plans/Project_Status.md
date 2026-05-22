@@ -1,5 +1,7 @@
 # Project Status
 
+**Last Updated:** 2026-05-22
+
 ## In Progress
 
 - [ ] Test FW Allocation miniapp with real Excel files
@@ -11,4 +13,5 @@
 - [ ] Settings menu content (theme selection, about, check for updates)
 - [ ] Clean up unused mobile icon files Tauri generated in src-tauri/icons/ (iOS/Android PNGs not needed for Windows-only app)
 - [ ] Consider prune-orphans logic in discovery.rs to auto-remove config entries whose miniapp folders were deleted
+- [ ] Stand up Supabase backend for SQL-based miniapps (see `Plans/sandbox-supabase-plan.md`) — create project, save keys, wire SDK
 - [ ] Add more miniapps as needed
