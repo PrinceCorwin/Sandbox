@@ -33,7 +33,13 @@
       "Bash(cmd.exe //c \"C:\\\\Users\\\\steve\\\\source\\\\repos\\\\PrinceCorwin\\\\Sandbox\\\\build_once.bat\")",
       "Bash(export PATH=\"/c/Program Files/nodejs:$HOME/.cargo/bin:$PATH\")",
       "Bash(npx tauri *)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git commit:*)",
+      "Bash(where Sandbox.exe)",
+      "Read(//c/Users/Steve.Amalfitano/**)",
+      "Bash(tasklist)",
+      "PowerShell(Get-Item *)",
+      "PowerShell(Get-ChildItem *)"
     ]
   }
 }

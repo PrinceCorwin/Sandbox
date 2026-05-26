@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 ## Naming Conventions
 - **App name:** Sandbox
@@ -68,7 +68,7 @@ Sandbox/
 │           └── fw_allocation.rs  # Excel processing
 ├── app_config.json               # Default config (bundled as resource)
 ├── package.json
-└── CLAUDE.md
+└── AGENTS.md
 ```
 
 ## Miniapp Structure
