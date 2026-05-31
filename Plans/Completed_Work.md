@@ -1,5 +1,15 @@
 # Completed Work
 
+## 2026-05-31
+
+- [x] Added new miniapp `photog_tips` (Photography Tip Cards) at `src/apps/photog_tips/` — 44 self-contained reference cards covering exposure, gear, portraits, macro, still life, and creative techniques. Source was an 18 MB single-file HTML with base64-embedded images; rewrote to reference 44 separate JPGs under `images/`, shrinking the HTML to 18 KB.
+- [x] Added a Home/Close topbar to the photog_tips page mirroring `fw_allocation`'s pattern (the source HTML had no navigation back to Sandbox home).
+- [x] Renamed all 44 photog_tips JPGs to lowercase underscore-safe filenames (e.g. `The Exposure Triangle.jpg` → `the_exposure_triangle.jpg`) — Tauri's WebView2 protocol handler refused to load any image whose filename contained spaces, even URL-encoded. Updated `app.json` thumbnail and all HTML `<img>` / JS `CARDS` references to match.
+- [x] Tagged `fw_allocation` as `Work` and `photog_tips` as `Personal` in runtime config (`%APPDATA%/com.princecorwin.sandbox/app_config.json`). `datalore` already had `Work`.
+- [x] Added CLAUDE.md instruction under **Miniapp Structure** requiring future-Claude to ask the user which tags a newly-added miniapp needs before finishing.
+- [x] Deleted `Plans/Photog Tip Cards/` source folder after migrating images and HTML into the miniapp.
+- [x] Documented the Tauri vs WPF stack re-evaluation in `Plans/Decisions.md` after the user hit Windows toolchain pain (missing MSVC C++ Build Tools) — decision to stay on Tauri because all miniapps remain HTML/JS/Alpine.
+
 ## 2026-05-26
 
 - [x] Committed previously-pending local-only changes that had drifted out of sync with `origin/main`:

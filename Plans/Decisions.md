@@ -78,6 +78,44 @@ giving per-user row scoping at the DB layer. Full context in
 
 ---
 
+### Sandbox stays on Tauri (re-evaluated vs WPF + WebView2)
+**Decision:** Sandbox remains on the Tauri 2 (Rust + WebView2) stack.
+Not migrating to WPF or any other shell.
+**Why:** User hit real Windows toolchain friction on a fresh machine —
+no Rust, no MSVC C++ Build Tools, and Git's `link.exe` (coreutils)
+shadowing MSVC's linker on PATH. Triggered a stack re-evaluation. The
+honest comparison: WPF's "one-VS-installer-and-it-works" ergonomics are
+genuinely better than Tauri's "Node + Rust + MSVC C++ Build Tools, all
+separate installs" setup. But every Sandbox miniapp to date is
+HTML/JS/Alpine (FW Allocation, DataLore, Photography Tip Cards) and is
+staying that way. Tauri's value prop is exactly "drop HTML into
+`src/apps/` and it shows up." WPF + WebView2 would re-implement the
+same shell with more C# glue and a full port of `discovery.rs` /
+Excel / SQLite commands. Worth the one-time MSVC install; not worth a
+rewrite. Revisit only if miniapps shift to native UI (forms, charts,
+native dialogs) rather than HTML.
+**Date:** May 2026.
+
+---
+
+### Miniapp asset filenames must be space-free
+**Decision:** All static assets shipped with a miniapp (images, fonts,
+data files) must use lowercase, space-free filenames (underscores or
+hyphens). Both the file on disk and any reference in HTML/JS/`app.json`
+follow the same rule.
+**Why:** Tauri 2's WebView2 protocol handler refuses to load assets
+whose filenames contain spaces, even when the `<img src>` is URL-encoded
+(`%20`). Discovered while importing the Photography Tip Cards miniapp:
+44 JPGs originally named `The Exposure Triangle.jpg`-style all failed
+to load; only the 3 files without spaces rendered. URL-encoding the
+references didn't help; renaming the files (and updating references)
+did. The asset protocol's behaviour here is undocumented but consistent,
+so the safest rule is to never ship a space-containing filename in the
+first place.
+**Date:** May 2026.
+
+---
+
 ### Error-toast duration extended to 8s + click-to-dismiss
 **Decision:** `showToast` defaults error toasts to 8 seconds (up from
 3s); success/info stay at 3s. Any toast can be dismissed by clicking it.

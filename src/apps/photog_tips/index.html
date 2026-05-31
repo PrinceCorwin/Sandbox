@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111418">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Photography Tip Cards</title>
+<style>
+  :root { --bg:#111418; --panel:#1b1f26; --line:#2a3038; --text:#e8eaed; --muted:#9aa3ad; --accent:#5b9dff; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  header { position:sticky; top:0; z-index:10; background:rgba(17,20,24,.92);
+    backdrop-filter:blur(10px); padding:env(safe-area-inset-top) 16px 12px; border-bottom:1px solid var(--line); }
+  h1 { font-size:18px; margin:14px 0 10px; font-weight:600; }
+  .search { width:100%; padding:11px 14px; font-size:16px; border-radius:12px;
+    border:1px solid var(--line); background:var(--panel); color:var(--text); outline:none; }
+  .search:focus { border-color:var(--accent); }
+  .count { color:var(--muted); font-size:12px; margin-top:8px; }
+  main { padding:8px 12px 40px; max-width:1100px; margin:0 auto; }
+  .cat h2 { font-size:14px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--muted); margin:22px 4px 10px; font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  @media(min-width:560px){ .grid{ grid-template-columns:repeat(3,1fr);} }
+  @media(min-width:900px){ .grid{ grid-template-columns:repeat(4,1fr);} }
+  .card { margin:0; background:var(--panel); border:1px solid var(--line);
+    border-radius:12px; overflow:hidden; cursor:pointer; transition:transform .12s; }
+  .card:active { transform:scale(.97); }
+  .card img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#000; }
+  .card figcaption { padding:8px 10px; font-size:12.5px; color:var(--text); }
+  .empty { color:var(--muted); text-align:center; padding:40px 0; display:none; }
+  .lb { position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:100;
+    display:none; align-items:center; justify-content:center; touch-action:pan-y; }
+  .lb.open { display:flex; }
+  .lb img { max-width:100%; max-height:88vh; object-fit:contain; }
+  .lb .cap { position:absolute; bottom:env(safe-area-inset-bottom); left:0; right:0;
+    text-align:center; padding:14px; font-size:15px; background:linear-gradient(transparent,rgba(0,0,0,.7)); }
+  .lb .x { position:absolute; top:calc(env(safe-area-inset-top) + 10px); right:14px;
+    font-size:30px; color:#fff; background:none; border:none; cursor:pointer; line-height:1; }
+  .lb .nav { position:absolute; top:50%; transform:translateY(-50%); font-size:40px;
+    color:#fff; background:none; border:none; cursor:pointer; padding:10px 16px; opacity:.7; }
+  .lb .prev { left:0; } .lb .next { right:0; }
+  @media(hover:none){ .lb .nav{ display:none; } }
+  .topbar { display:flex; align-items:center; padding:0 16px; height:48px;
+    background:var(--panel); border-bottom:1px solid var(--line); }
+  .topbar a { display:flex; align-items:center; gap:6px; color:var(--text);
+    text-decoration:none; font-size:14px; padding:8px 10px; border-radius:8px; }
+  .topbar a:hover { background:var(--line); }
+  .topbar .title { flex:1; text-align:center; font-weight:600; font-size:14px; }
+  .topbar svg { width:16px; height:16px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <a href="../../index.html" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <span class="title">Photography Tip Cards</span>
+    <a href="../../index.html" aria-label="Close">
+      Close
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </a>
+  </div>
+  <h1>Photography Tip Cards</h1>
+  <input id="q" class="search" type="search" placeholder="Search tips&hellip; e.g. flash, macro, ISO" autocomplete="off">
+  <div class="count" id="count"></div>
+</header>
+<main id="main">
+<section class="cat"><h2>Exposure &amp; Settings</h2><div class="grid">
+<figure class="card" data-title="aperture and dof" data-idx="0"><img loading="lazy" src="images/aperture_and_dof.jpg" alt="Aperture and DOF"><figcaption>Aperture and DOF</figcaption></figure>
+<figure class="card" data-title="f-stop table" data-idx="1"><img loading="lazy" src="images/f-stop_table.jpg" alt="F-stop Table"><figcaption>F-stop Table</figcaption></figure>
+<figure class="card" data-title="iso sensitivity guide" data-idx="2"><img loading="lazy" src="images/iso_sensitivity_guide.jpg" alt="ISO sensitivity Guide"><figcaption>ISO sensitivity Guide</figcaption></figure>
+<figure class="card" data-title="sunny 16 rule" data-idx="3"><img loading="lazy" src="images/sunny_16_rule.jpg" alt="Sunny 16 Rule"><figcaption>Sunny 16 Rule</figcaption></figure>
+<figure class="card" data-title="the exposure triangle" data-idx="4"><img loading="lazy" src="images/the_exposure_triangle.jpg" alt="The Exposure Triangle"><figcaption>The Exposure Triangle</figcaption></figure>
+<figure class="card" data-title="which shutter speed" data-idx="5"><img loading="lazy" src="images/which_shutter_speed.jpg" alt="Which Shutter Speed"><figcaption>Which Shutter Speed</figcaption></figure>
+</div></section>
+<section class="cat"><h2>Gear &amp; Optics</h2><div class="grid">
+<figure class="card" data-title="aps c vs full frame" data-idx="6"><img loading="lazy" src="images/aps_c_vs_full_frame.jpg" alt="APS C vs Full Frame"><figcaption>APS C vs Full Frame</figcaption></figure>
+<figure class="card" data-title="camera handling guide" data-idx="7"><img loading="lazy" src="images/camera_handling_guide.jpg" alt="Camera Handling Guide"><figcaption>Camera Handling Guide</figcaption></figure>
+<figure class="card" data-title="color wheel" data-idx="8"><img loading="lazy" src="images/color_wheel.jpg" alt="Color Wheel"><figcaption>Color Wheel</figcaption></figure>
+<figure class="card" data-title="continuous lightings" data-idx="9"><img loading="lazy" src="images/continuous_lightings.jpg" alt="Continuous Lightings"><figcaption>Continuous Lightings</figcaption></figure>
+<figure class="card" data-title="flash front or rear" data-idx="10"><img loading="lazy" src="images/flash_front_or_rear.jpg" alt="Flash Front or Rear"><figcaption>Flash Front or Rear</figcaption></figure>
+<figure class="card" data-title="how ttl flash works" data-idx="11"><img loading="lazy" src="images/how_ttl_flash_works.jpg" alt="How TTL Flash Works"><figcaption>How TTL Flash Works</figcaption></figure>
+<figure class="card" data-title="how a lens works" data-idx="12"><img loading="lazy" src="images/how_a_lens_works.jpg" alt="How a Lens Works"><figcaption>How a Lens Works</figcaption></figure>
+<figure class="card" data-title="image stabilization" data-idx="13"><img loading="lazy" src="images/image_stabilization.jpg" alt="Image Stabilization"><figcaption>Image Stabilization</figcaption></figure>
+<figure class="card" data-title="macro lens" data-idx="14"><img loading="lazy" src="images/macro_lens.jpg" alt="Macro Lens"><figcaption>Macro Lens</figcaption></figure>
+</div></section>
+<section class="cat"><h2>Portraits</h2><div class="grid">
+<figure class="card" data-title="backlit portraits" data-idx="15"><img loading="lazy" src="images/backlit_portraits.jpg" alt="Backlit Portraits"><figcaption>Backlit Portraits</figcaption></figure>
+<figure class="card" data-title="creative newborns" data-idx="16"><img loading="lazy" src="images/creative_newborns.jpg" alt="Creative Newborns"><figcaption>Creative Newborns</figcaption></figure>
+<figure class="card" data-title="cute pet portraits" data-idx="17"><img loading="lazy" src="images/cute_pet_portraits.jpg" alt="Cute Pet Portraits"><figcaption>Cute Pet Portraits</figcaption></figure>
+<figure class="card" data-title="garden backlit portrait" data-idx="18"><img loading="lazy" src="images/garden_backlit_portrait.jpg" alt="Garden Backlit Portrait"><figcaption>Garden Backlit Portrait</figcaption></figure>
+<figure class="card" data-title="low key portraits" data-idx="19"><img loading="lazy" src="images/low_key_portraits.jpg" alt="Low Key Portraits"><figcaption>Low Key Portraits</figcaption></figure>
+<figure class="card" data-title="pet caricatures" data-idx="20"><img loading="lazy" src="images/pet_caricatures.jpg" alt="Pet Caricatures"><figcaption>Pet Caricatures</figcaption></figure>
+<figure class="card" data-title="portrait with a twist" data-idx="21"><img loading="lazy" src="images/portrait_with_a_twist.jpg" alt="Portrait With A Twist"><figcaption>Portrait With A Twist</figcaption></figure>
+<figure class="card" data-title="powder paint portrait" data-idx="22"><img loading="lazy" src="images/powder_paint_portrait.jpg" alt="Powder Paint Portrait"><figcaption>Powder Paint Portrait</figcaption></figure>
+<figure class="card" data-title="twilight flash portrait" data-idx="23"><img loading="lazy" src="images/twilight_flash_portrait.jpg" alt="Twilight Flash Portrait"><figcaption>Twilight Flash Portrait</figcaption></figure>
+</div></section>
+<section class="cat"><h2>Macro &amp; Nature</h2><div class="grid">
+<figure class="card" data-title="bugs eye view" data-idx="24"><img loading="lazy" src="images/bugs_eye_view.jpg" alt="Bugs Eye View"><figcaption>Bugs Eye View</figcaption></figure>
+<figure class="card" data-title="butterflies" data-idx="25"><img loading="lazy" src="images/butterflies.jpg" alt="Butterflies"><figcaption>Butterflies</figcaption></figure>
+<figure class="card" data-title="butterfly wings" data-idx="26"><img loading="lazy" src="images/butterfly_wings.jpg" alt="Butterfly Wings"><figcaption>Butterfly Wings</figcaption></figure>
+<figure class="card" data-title="flower abstracts" data-idx="27"><img loading="lazy" src="images/flower_abstracts.jpg" alt="Flower Abstracts"><figcaption>Flower Abstracts</figcaption></figure>
+<figure class="card" data-title="garden bird portraits" data-idx="28"><img loading="lazy" src="images/garden_bird_portraits.jpg" alt="Garden Bird Portraits"><figcaption>Garden Bird Portraits</figcaption></figure>
+<figure class="card" data-title="its a small world" data-idx="29"><img loading="lazy" src="images/its_a_small_world.jpg" alt="Its A Small World"><figcaption>Its A Small World</figcaption></figure>
+<figure class="card" data-title="leaves in ice" data-idx="30"><img loading="lazy" src="images/leaves_in_ice.jpg" alt="Leaves In Ice"><figcaption>Leaves In Ice</figcaption></figure>
+<figure class="card" data-title="morning dew" data-idx="31"><img loading="lazy" src="images/morning_dew.jpg" alt="Morning Dew"><figcaption>Morning Dew</figcaption></figure>
+<figure class="card" data-title="play with perspective" data-idx="32"><img loading="lazy" src="images/play_with_perspective.jpg" alt="Play With Perspective"><figcaption>Play With Perspective</figcaption></figure>
+<figure class="card" data-title="shift flower focus" data-idx="33"><img loading="lazy" src="images/shift_flower_focus.jpg" alt="Shift Flower Focus"><figcaption>Shift Flower Focus</figcaption></figure>
+</div></section>
+<section class="cat"><h2>Still Life</h2><div class="grid">
+<figure class="card" data-title="abstract bubbles" data-idx="34"><img loading="lazy" src="images/abstract_bubbles.jpg" alt="Abstract Bubbles"><figcaption>Abstract Bubbles</figcaption></figure>
+<figure class="card" data-title="classic still life" data-idx="35"><img loading="lazy" src="images/classic_still_life.jpg" alt="Classic Still Life"><figcaption>Classic Still Life</figcaption></figure>
+<figure class="card" data-title="fine art vegatables" data-idx="36"><img loading="lazy" src="images/fine_art_vegatables.jpg" alt="Fine Art Vegatables"><figcaption>Fine Art Vegatables</figcaption></figure>
+<figure class="card" data-title="interiors" data-idx="37"><img loading="lazy" src="images/interiors.jpg" alt="Interiors"><figcaption>Interiors</figcaption></figure>
+<figure class="card" data-title="refraction still life" data-idx="38"><img loading="lazy" src="images/refraction_still_life.jpg" alt="Refraction Still Life"><figcaption>Refraction Still Life</figcaption></figure>
+</div></section>
+<section class="cat"><h2>Creative Effects</h2><div class="grid">
+<figure class="card" data-title="cross processed look" data-idx="39"><img loading="lazy" src="images/cross_processed_look.jpg" alt="Cross Processed Look"><figcaption>Cross Processed Look</figcaption></figure>
+<figure class="card" data-title="double exposures" data-idx="40"><img loading="lazy" src="images/double_exposures.jpg" alt="Double Exposures"><figcaption>Double Exposures</figcaption></figure>
+<figure class="card" data-title="smoke trail art" data-idx="41"><img loading="lazy" src="images/smoke_trail_art.jpg" alt="Smoke Trail Art"><figcaption>Smoke Trail Art</figcaption></figure>
+<figure class="card" data-title="spirograms" data-idx="42"><img loading="lazy" src="images/spirograms.jpg" alt="Spirograms"><figcaption>Spirograms</figcaption></figure>
+<figure class="card" data-title="wire wool trails" data-idx="43"><img loading="lazy" src="images/wire_wool_trails.jpg" alt="Wire Wool Trails"><figcaption>Wire Wool Trails</figcaption></figure>
+</div></section>
+  <div class="empty" id="empty">No cards match your search.</div>
+</main>
+
+<div class="lb" id="lb">
+  <button class="x" id="close" aria-label="Close">&times;</button>
+  <button class="nav prev" id="prev" aria-label="Previous">&#8249;</button>
+  <img id="lbimg" src="" alt="">
+  <button class="nav next" id="next" aria-label="Next">&#8250;</button>
+  <div class="cap" id="cap"></div>
+</div>
+
+<script>
+const CARDS = [{"title": "Aperture and DOF", "src": "images/aperture_and_dof.jpg"}, {"title": "F-stop Table", "src": "images/f-stop_table.jpg"}, {"title": "ISO sensitivity Guide", "src": "images/iso_sensitivity_guide.jpg"}, {"title": "Sunny 16 Rule", "src": "images/sunny_16_rule.jpg"}, {"title": "The Exposure Triangle", "src": "images/the_exposure_triangle.jpg"}, {"title": "Which Shutter Speed", "src": "images/which_shutter_speed.jpg"}, {"title": "APS C vs Full Frame", "src": "images/aps_c_vs_full_frame.jpg"}, {"title": "Camera Handling Guide", "src": "images/camera_handling_guide.jpg"}, {"title": "Color Wheel", "src": "images/color_wheel.jpg"}, {"title": "Continuous Lightings", "src": "images/continuous_lightings.jpg"}, {"title": "Flash Front or Rear", "src": "images/flash_front_or_rear.jpg"}, {"title": "How TTL Flash Works", "src": "images/how_ttl_flash_works.jpg"}, {"title": "How a Lens Works", "src": "images/how_a_lens_works.jpg"}, {"title": "Image Stabilization", "src": "images/image_stabilization.jpg"}, {"title": "Macro Lens", "src": "images/macro_lens.jpg"}, {"title": "Backlit Portraits", "src": "images/backlit_portraits.jpg"}, {"title": "Creative Newborns", "src": "images/creative_newborns.jpg"}, {"title": "Cute Pet Portraits", "src": "images/cute_pet_portraits.jpg"}, {"title": "Garden Backlit Portrait", "src": "images/garden_backlit_portrait.jpg"}, {"title": "Low Key Portraits", "src": "images/low_key_portraits.jpg"}, {"title": "Pet Caricatures", "src": "images/pet_caricatures.jpg"}, {"title": "Portrait With A Twist", "src": "images/portrait_with_a_twist.jpg"}, {"title": "Powder Paint Portrait", "src": "images/powder_paint_portrait.jpg"}, {"title": "Twilight Flash Portrait", "src": "images/twilight_flash_portrait.jpg"}, {"title": "Bugs Eye View", "src": "images/bugs_eye_view.jpg"}, {"title": "Butterflies", "src": "images/butterflies.jpg"}, {"title": "Butterfly Wings", "src": "images/butterfly_wings.jpg"}, {"title": "Flower Abstracts", "src": "images/flower_abstracts.jpg"}, {"title": "Garden Bird Portraits", "src": "images/garden_bird_portraits.jpg"}, {"title": "Its A Small World", "src": "images/its_a_small_world.jpg"}, {"title": "Leaves In Ice", "src": "images/leaves_in_ice.jpg"}, {"title": "Morning Dew", "src": "images/morning_dew.jpg"}, {"title": "Play With Perspective", "src": "images/play_with_perspective.jpg"}, {"title": "Shift Flower Focus", "src": "images/shift_flower_focus.jpg"}, {"title": "Abstract Bubbles", "src": "images/abstract_bubbles.jpg"}, {"title": "Classic Still Life", "src": "images/classic_still_life.jpg"}, {"title": "Fine Art Vegatables", "src": "images/fine_art_vegatables.jpg"}, {"title": "Interiors", "src": "images/interiors.jpg"}, {"title": "Refraction Still Life", "src": "images/refraction_still_life.jpg"}, {"title": "Cross Processed Look", "src": "images/cross_processed_look.jpg"}, {"title": "Double Exposures", "src": "images/double_exposures.jpg"}, {"title": "Smoke Trail Art", "src": "images/smoke_trail_art.jpg"}, {"title": "Spirograms", "src": "images/spirograms.jpg"}, {"title": "Wire Wool Trails", "src": "images/wire_wool_trails.jpg"}];
+const cardEls = [...document.querySelectorAll('.card')];
+const q = document.getElementById('q');
+const countEl = document.getElementById('count');
+const emptyEl = document.getElementById('empty');
+const total = CARDS.length;
+
+function updateCount(n){ countEl.textContent = n + " of " + total + " cards"; }
+updateCount(total);
+
+q.addEventListener('input', () => {
+  const term = q.value.trim().toLowerCase();
+  let shown = 0;
+  const catVisible = {};
+  cardEls.forEach(el => {
+    const match = !term || el.dataset.title.includes(term);
+    el.style.display = match ? '' : 'none';
+    if (match){ shown++; const c = el.closest('.cat'); catVisible[c.querySelector('h2').textContent]=true; }
+  });
+  document.querySelectorAll('.cat').forEach(c => {
+    const h = c.querySelector('h2').textContent;
+    c.style.display = (!term || catVisible[h]) ? '' : 'none';
+  });
+  emptyEl.style.display = shown ? 'none' : 'block';
+  updateCount(shown);
+});
+
+const lb = document.getElementById('lb');
+const lbimg = document.getElementById('lbimg');
+const cap = document.getElementById('cap');
+let cur = 0;
+function open(i){ cur=i; lbimg.src=CARDS[i].src; cap.textContent=CARDS[i].title; lb.classList.add('open'); }
+function close(){ lb.classList.remove('open'); lbimg.src=''; }
+function step(d){ cur=(cur+d+total)%total; lbimg.src=CARDS[cur].src; cap.textContent=CARDS[cur].title; }
+cardEls.forEach(el => el.addEventListener('click', () => open(+el.dataset.idx)));
+document.getElementById('close').addEventListener('click', close);
+document.getElementById('prev').addEventListener('click', e=>{e.stopPropagation();step(-1);});
+document.getElementById('next').addEventListener('click', e=>{e.stopPropagation();step(1);});
+lb.addEventListener('click', e=>{ if(e.target===lb) close(); });
+document.addEventListener('keydown', e=>{ if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')close(); if(e.key==='ArrowRight')step(1); if(e.key==='ArrowLeft')step(-1); });
+let sx=0;
+lb.addEventListener('touchstart', e=>{ sx=e.touches[0].clientX; }, {passive:true});
+lb.addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>50) step(dx<0?1:-1); }, {passive:true});
+</script>
+</body>
+</html>

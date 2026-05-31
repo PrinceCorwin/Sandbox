@@ -39,7 +39,9 @@
       "Read(//c/Users/Steve.Amalfitano/**)",
       "Bash(tasklist)",
       "PowerShell(Get-Item *)",
-      "PowerShell(Get-ChildItem *)"
+      "PowerShell(Get-ChildItem *)",
+      "Bash(node *)",
+      "PowerShell(Test-Path *)"
     ]
   }
 }

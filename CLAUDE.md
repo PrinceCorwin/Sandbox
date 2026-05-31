@@ -82,6 +82,8 @@ Miniapps must not depend on each other. Adding/removing a folder under `src/apps
 
 **Backend logic** for miniapps that need it (e.g., Excel processing) goes in `src-tauri/src/commands/` as Rust Tauri commands. Frontend calls them via `invoke('command_name', { args })`.
 
+**When adding a new miniapp**, after creating its folder/files, ask the user which tags it should be assigned (e.g., "Work", "Personal"). Then update `%APPDATA%/com.princecorwin.sandbox/app_config.json` to add the `tags` array to that app's entry. Do not skip this step or guess.
+
 ## Development Approach
 - ONE change at a time, test before proceeding
 - No quick fixes — proper architectural solutions
