@@ -10,6 +10,7 @@ data/
 # Machine-specific
 start.bat
 start.sh
+.claude/settings.local.json
 
 # IDE
 .vscode/
